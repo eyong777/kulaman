@@ -89,8 +89,8 @@ export function UserForm({ schools }: { schools: School[] }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Create user</CardTitle>
-        <CardDescription>Admin can create Admin, School Head, and School Coordinator accounts.</CardDescription>
+        <CardTitle>Invite user</CardTitle>
+        <CardDescription>Send an email invitation for Admin, School Head, and School Coordinator accounts.</CardDescription>
       </CardHeader>
       <CardContent>
         <form action={action} className="grid gap-4 md:grid-cols-2">
@@ -126,7 +126,7 @@ export function UserForm({ schools }: { schools: School[] }) {
             Active account
           </label>
           <div className="md:col-span-2">
-            <SubmitButton>Create account</SubmitButton>
+            <SubmitButton>Send invitation</SubmitButton>
           </div>
         </form>
       </CardContent>

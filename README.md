@@ -78,6 +78,19 @@ Production-ready Next.js 15 App Router application for secure school report subm
 - A database trigger prevents self-service role, school, status, and email changes.
 - A database trigger prevents School Coordinators from changing review fields.
 - Important events are written to `activity_logs`.
+- Admin-created accounts are invited by email and routed through `/auth/confirm` before password setup.
+
+## Production checks
+
+Before customer handoff, run:
+
+```bash
+npm run typecheck
+npm run lint
+npm run build
+```
+
+Rotate the Supabase service-role key if it was ever shared outside the deployment environment, then update Vercel environment variables and redeploy.
 
 ## Project structure
 

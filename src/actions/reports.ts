@@ -97,15 +97,17 @@ export async function reviewReport(_: ActionState, formData: FormData): Promise<
     .single();
   if (updateError || !report) return { error: updateError?.message ?? "Unable to review report." };
 
-  await supabase.from("notifications").insert({
-    recipient_id: report.submitted_by,
-    report_id: report.id,
-    title: `Report ${parsed.data.status}`,
-    body:
-      parsed.data.status === "approved"
-        ? `"${report.title}" has been approved.`
-        : `"${report.title}" has been rejected. Please review the remarks.`
-  });
+  if (report.submitted_by) {
+    await supabase.from("notifications").insert({
+      recipient_id: report.submitted_by,
+      report_id: report.id,
+      title: `Report ${parsed.data.status}`,
+      body:
+        parsed.data.status === "approved"
+          ? `"${report.title}" has been approved.`
+          : `"${report.title}" has been rejected. Please review the remarks.`
+    });
+  }
 
   await logActivity({
     action: parsed.data.status === "approved" ? "approved_report" : "rejected_report",

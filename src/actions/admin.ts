@@ -59,19 +59,18 @@ export async function createUser(_: ActionState, formData: FormData): Promise<Ac
   }
 
   const admin = createAdminClient();
-  const tempPassword = crypto.randomUUID().slice(0, 12) + "Aa1!";
-  const { data, error } = await admin.auth.admin.createUser({
-    email: parsed.data.email,
-    password: tempPassword,
-    email_confirm: true,
-    user_metadata: {
-      full_name: parsed.data.full_name,
-      role: parsed.data.role,
-      school_id: parsed.data.school_id,
-      must_change_password: true
-    }
+  const origin = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+  const userMetadata = {
+    full_name: parsed.data.full_name,
+    role: parsed.data.role,
+    school_id: parsed.data.school_id,
+    must_change_password: true
+  };
+  const { data, error } = await admin.auth.admin.inviteUserByEmail(parsed.data.email, {
+    redirectTo: `${origin}/auth/confirm`,
+    data: userMetadata
   });
-  if (error || !data.user) return { error: error?.message ?? "Unable to create user." };
+  if (error || !data.user) return { error: error?.message ?? "Unable to invite user." };
 
   const { error: profileError } = await admin.from("users").upsert({
     id: data.user.id,
@@ -83,9 +82,18 @@ export async function createUser(_: ActionState, formData: FormData): Promise<Ac
   });
   if (profileError) return { error: profileError.message };
 
-  await logActivity({ action: "created_user", entity_type: "user", entity_id: data.user.id });
+  await admin.auth.admin.updateUserById(data.user.id, {
+    user_metadata: {
+      full_name: parsed.data.full_name,
+      role: parsed.data.role,
+      school_id: parsed.data.school_id,
+      must_change_password: true
+    }
+  });
+
+  await logActivity({ action: "invited_user", entity_type: "user", entity_id: data.user.id });
   revalidatePath("/admin/users");
-  return { success: `User created. Temporary password: ${tempPassword}` };
+  return { success: "Invitation sent. The user must confirm the email and set a password." };
 }
 
 export async function resetUserPassword(userId: string) {
