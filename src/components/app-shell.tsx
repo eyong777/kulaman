@@ -16,7 +16,7 @@ export function AppShell({ profile, children }: { profile: UserProfile; children
   if (!profile.is_active) redirect("/login");
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background/90">
       <div className="gov-band h-1.5" />
       <div className="flex min-h-[calc(100vh-6px)]">
         <aside className="hidden w-72 border-r bg-white/92 lg:block">

@@ -37,6 +37,24 @@ body {
   font-feature-settings: "rlig" 1, "calt" 1;
 }
 
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url("/eyong-watermark.png");
+  background-position: center;
+  background-size: 720px auto;
+  background-repeat: repeat;
+  opacity: 0.08;
+}
+
+body > * {
+  position: relative;
+  z-index: 1;
+}
+
 @layer components {
   .gov-band {
     background: linear-gradient(90deg, #063a7a, #0d62b6 52%, #1493b8);
