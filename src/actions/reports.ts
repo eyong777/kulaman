@@ -1,7 +1,6 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { requireProfile } from "@/lib/auth";
 import { REPORT_BUCKET } from "@/lib/constants";
 import { createClient } from "@/lib/supabase/server";
@@ -150,8 +149,4 @@ export async function updateSchoolProfile(_: ActionState, formData: FormData): P
   await logActivity({ action: "updated_school_profile", entity_type: "school", entity_id: profile.school_id });
   revalidatePath("/school/profile");
   return { success: "School profile updated." };
-}
-
-export async function goToReport(path: string) {
-  redirect(path);
 }
