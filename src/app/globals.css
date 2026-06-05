@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 210 40% 98%;
+  --foreground: 222 47% 11%;
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 47% 11%;
+  --primary: 214 88% 35%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 205 92% 95%;
+  --secondary-foreground: 214 80% 24%;
+  --muted: 210 28% 94%;
+  --muted-foreground: 215 16% 38%;
+  --accent: 190 78% 42%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 72% 48%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 214 28% 88%;
+  --input: 214 28% 88%;
+  --ring: 214 88% 35%;
+  --radius: 0.5rem;
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+body {
+  background:
+    radial-gradient(circle at top left, rgba(18, 110, 190, 0.1), transparent 34rem),
+    hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-feature-settings: "rlig" 1, "calt" 1;
+}
+
+@layer components {
+  .gov-band {
+    background: linear-gradient(90deg, #063a7a, #0d62b6 52%, #1493b8);
+  }
+}
