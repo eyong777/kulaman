@@ -45,9 +45,9 @@ body::after {
   pointer-events: none;
   background-image: url("/eyong-watermark.png");
   background-position: center;
-  background-size: 680px auto;
+  background-size: 980px auto;
   background-repeat: repeat;
-  opacity: 0.055;
+  opacity: 0.045;
 }
 
 @layer components {
