@@ -6,19 +6,12 @@ import { Card } from "@/components/ui/card";
 import { APP_NAME, adminNavItems, roleLabels, schoolHeadNavItems, schoolUserNavItems } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { signOut } from "@/actions/auth";
-import { createClient } from "@/lib/supabase/server";
+import { NotificationBadge } from "@/components/notification-badge";
 import type { UserProfile } from "@/types/database";
 
-export async function AppShell({ profile, children }: { profile: UserProfile; children: React.ReactNode }) {
+export function AppShell({ profile, children }: { profile: UserProfile; children: React.ReactNode }) {
   const navItems =
     profile.role === "admin" ? adminNavItems : profile.role === "school_head" ? schoolHeadNavItems : schoolUserNavItems;
-  const supabase = await createClient();
-  const notificationQuery = supabase
-    .from("notifications")
-    .select("id", { count: "exact", head: true })
-    .eq("is_read", false);
-  if (profile.role !== "admin") notificationQuery.eq("recipient_id", profile.id);
-  const { count: unreadNotifications } = await notificationQuery;
 
   if (!profile.is_active) redirect("/login");
 
@@ -50,11 +43,7 @@ export async function AppShell({ profile, children }: { profile: UserProfile; ch
                 >
                   <item.icon className="size-4" />
                   <span className="flex-1">{item.label}</span>
-                  {item.label === "Notifications" && unreadNotifications ? (
-                    <span className="grid min-w-5 place-items-center rounded-full bg-red-600 px-1.5 py-0.5 text-[11px] font-bold text-white">
-                      {unreadNotifications > 99 ? "99+" : unreadNotifications}
-                    </span>
-                  ) : null}
+                  {item.label === "Notifications" ? <NotificationBadge /> : null}
                 </Link>
               ))}
             </nav>
@@ -90,11 +79,7 @@ export async function AppShell({ profile, children }: { profile: UserProfile; ch
                     <Link key={item.href} href={item.href} className="flex items-center gap-3 rounded-md px-3 py-2 text-sm">
                       <item.icon className="size-4" />
                       <span className="flex-1">{item.label}</span>
-                      {item.label === "Notifications" && unreadNotifications ? (
-                        <span className="grid min-w-5 place-items-center rounded-full bg-red-600 px-1.5 py-0.5 text-[11px] font-bold text-white">
-                          {unreadNotifications > 99 ? "99+" : unreadNotifications}
-                        </span>
-                      ) : null}
+                      {item.label === "Notifications" ? <NotificationBadge /> : null}
                     </Link>
                   ))}
                   <form action={signOut} className="mt-2 border-t pt-2">
