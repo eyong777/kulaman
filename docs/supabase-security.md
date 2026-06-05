@@ -16,9 +16,9 @@ The schema creates:
 
 - Admin can manage all application data.
 - School Head can view and review all reports.
-- School User can view and update only assigned school profile data.
-- School User can insert reports only for assigned school.
-- School User can edit or delete reports only while pending.
+- School Coordinator can view and update only assigned school profile data.
+- School Coordinator can insert reports only for assigned school.
+- School Coordinator can edit or delete reports only while pending.
 - Report files inherit visibility from their parent report.
 - Notifications are visible to the recipient or Admin.
 - Activity logs are visible to Admin, School Head, and the actor who created the log.

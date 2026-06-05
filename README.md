@@ -13,7 +13,7 @@ Production-ready Next.js 15 App Router application for secure school report subm
 
 - **Admin:** Full management of schools, users, report categories, reports, reviews, downloads, activity logs, settings, and password resets.
 - **School Head:** Can view, filter, open, download, approve, and reject all school reports.
-- **School User:** Can update only their own school profile, upload reports, view their own submissions, and delete pending reports only.
+- **School Coordinator:** Can update only their own school profile, upload reports, view their own submissions, and delete pending reports only.
 
 ## Local setup
 
@@ -76,7 +76,7 @@ Production-ready Next.js 15 App Router application for secure school report subm
 - Storage policies only allow uploads for pending reports and only allow downloads through visible report records.
 - School users can only access their assigned school and own reports.
 - A database trigger prevents self-service role, school, status, and email changes.
-- A database trigger prevents school users from changing review fields.
+- A database trigger prevents School Coordinators from changing review fields.
 - Important events are written to `activity_logs`.
 
 ## Project structure
@@ -85,7 +85,7 @@ Production-ready Next.js 15 App Router application for secure school report subm
 src/app
   (auth)                 Login, reset, update password
   (dashboard)/admin      Admin dashboard and management pages
-  (dashboard)/school     School user dashboard and workflows
+  (dashboard)/school     School Coordinator dashboard and workflows
   (dashboard)/school-head School Head dashboard and review pages
 src/actions              Server actions for auth, admin, reports, notifications
 src/components           App shell, forms, tables, charts, UI primitives

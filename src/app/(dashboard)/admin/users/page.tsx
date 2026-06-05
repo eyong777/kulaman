@@ -15,7 +15,7 @@ export default async function UsersManagementPage() {
   const [users, schools] = await Promise.all([getUsers(), getSchools()]);
   return (
     <>
-      <PageHeader title="Users Management" description="Create users, assign schools, manage the School Head account, and reset passwords." icon={Users} />
+      <PageHeader title="Users Management" description="Create Admin, School Head, and School Coordinator accounts, then reset passwords when needed." icon={Users} />
       <div className="grid gap-6 xl:grid-cols-[1fr_420px]">
         <Card>
           <Table>

@@ -60,7 +60,7 @@ export const schoolUserNavItems = [
 export const roleLabels = {
   admin: "Admin",
   school_head: "School Head",
-  school_user: "School User"
+  school_user: "School Coordinator"
 } as const;
 
 export const defaultCategories = [

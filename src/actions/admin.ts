@@ -55,7 +55,7 @@ export async function createUser(_: ActionState, formData: FormData): Promise<Ac
   if (!parsed.success) return { error: parsed.error.issues[0]?.message ?? "Invalid user details." };
 
   if (parsed.data.role === "school_user" && !parsed.data.school_id) {
-    return { error: "School users must be assigned to a school." };
+    return { error: "School Coordinators must be assigned to a school." };
   }
 
   const admin = createAdminClient();

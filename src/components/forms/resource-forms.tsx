@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useActionState } from "react";
 import { createUser, upsertCategory, upsertSchool } from "@/actions/admin";
 import { updateOwnSettings } from "@/actions/auth";
@@ -84,11 +85,12 @@ export function CategoryForm({ category }: { category?: ReportCategory }) {
 
 export function UserForm({ schools }: { schools: School[] }) {
   const [state, action] = useActionState<ActionState, FormData>(createUser, null);
+  const [role, setRole] = useState("school_user");
   return (
     <Card>
       <CardHeader>
         <CardTitle>Create user</CardTitle>
-        <CardDescription>Admin can create Admin, School Head, and School User accounts.</CardDescription>
+        <CardDescription>Admin can create Admin, School Head, and School Coordinator accounts.</CardDescription>
       </CardHeader>
       <CardContent>
         <form action={action} className="grid gap-4 md:grid-cols-2">
@@ -97,23 +99,27 @@ export function UserForm({ schools }: { schools: School[] }) {
           <Field name="email" label="Email" type="email" required />
           <div className="space-y-2">
             <Label htmlFor="role">Role</Label>
-            <Select id="role" name="role" defaultValue="school_user">
-              <option value="school_user">School User</option>
+            <Select id="role" name="role" value={role} onChange={(event) => setRole(event.target.value)}>
+              <option value="school_user">School Coordinator</option>
               <option value="school_head">School Head</option>
               <option value="admin">Admin</option>
             </Select>
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="school_id">Assigned School</Label>
-            <Select id="school_id" name="school_id" defaultValue="">
-              <option value="">Not assigned</option>
-              {schools.map((school) => (
-                <option key={school.id} value={school.id}>
-                  {school.name}
-                </option>
-              ))}
-            </Select>
-          </div>
+          {role === "school_user" ? (
+            <div className="space-y-2">
+              <Label htmlFor="school_id">Assigned School</Label>
+              <Select id="school_id" name="school_id" defaultValue="" required>
+                <option value="">Select school</option>
+                {schools.map((school) => (
+                  <option key={school.id} value={school.id}>
+                    {school.name}
+                  </option>
+                ))}
+              </Select>
+            </div>
+          ) : (
+            <input type="hidden" name="school_id" value="" />
+          )}
           <input type="hidden" name="is_active" value="false" />
           <label className="flex items-center gap-2 text-sm md:col-span-2">
             <input type="checkbox" name="is_active" defaultChecked value="true" />

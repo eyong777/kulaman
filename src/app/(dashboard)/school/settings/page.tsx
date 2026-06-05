@@ -9,7 +9,7 @@ export default async function SchoolSettingsPage() {
   const profile = await requireProfile(["school_user"]);
   return (
     <>
-      <PageHeader title="Settings" description="Manage your school user account information." icon={Settings} />
+      <PageHeader title="Settings" description="Manage your School Coordinator account information." icon={Settings} />
       <div className="space-y-6">
         <Card>
           <CardHeader>
