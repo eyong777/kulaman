@@ -8,7 +8,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
       <section className="flex items-center justify-center p-6">
         <div className="w-full max-w-md">{children}</div>
       </section>
-      <section className="gov-band hidden p-10 text-white lg:flex lg:flex-col lg:justify-between">
+      <section className="gov-band relative hidden p-10 text-white lg:flex lg:flex-col lg:justify-between">
         <div className="flex items-center gap-3">
           <span className="grid size-12 place-items-center rounded-lg bg-white/15">
             <ShieldCheck className="size-7" />
@@ -18,14 +18,14 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
             <p className="text-2xl font-bold">{APP_NAME}</p>
           </div>
         </div>
-        <div className="flex flex-1 items-end justify-end pb-10 pt-10">
+        <div className="absolute bottom-8 right-8">
           <Image
             src="/cyong-logo-bg50.png"
             alt="CYONG logo"
             width={2048}
             height={683}
             priority
-            className="h-auto w-full max-w-[360px] object-contain"
+            className="h-auto w-[240px] object-contain"
           />
         </div>
       </section>
