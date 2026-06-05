@@ -6,10 +6,10 @@ import { REPORT_BUCKET } from "@/lib/constants";
 import { createClient } from "@/lib/supabase/server";
 import { logActivity } from "@/lib/audit";
 import { reportFileSchema, reportReviewSchema, reportSchema, schoolSchema } from "@/lib/validators";
-import type { ActionState } from "@/types/actions";
+import type { ActionState, ReportCreateState } from "@/types/actions";
 import type { ReportStatus } from "@/types/database";
 
-export async function createReport(_: unknown, formData: FormData) {
+export async function createReport(_: ReportCreateState, formData: FormData): Promise<ReportCreateState> {
   const profile = await requireProfile(["admin", "school_user"]);
   const parsed = reportSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) return { error: parsed.error.issues[0]?.message ?? "Invalid report." };
@@ -36,7 +36,7 @@ export async function createReport(_: unknown, formData: FormData) {
   return { success: "Report created.", reportId: data.id, schoolId: data.school_id };
 }
 
-export async function attachReportFile(_: unknown, formData: FormData) {
+export async function attachReportFile(_: ActionState, formData: FormData): Promise<ActionState> {
   await requireProfile(["admin", "school_user"]);
   const parsed = reportFileSchema.safeParse({
     report_id: formData.get("report_id"),

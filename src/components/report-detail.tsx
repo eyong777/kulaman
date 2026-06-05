@@ -1,5 +1,6 @@
 import { Download, ExternalLink, FileText } from "lucide-react";
 import { format } from "date-fns";
+import type { Route } from "next";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { StatusBadge } from "@/components/status-badge";
@@ -20,7 +21,7 @@ export function ReportDetail({
   files: ReportFile[];
   role: UserRole;
   categories?: ReportCategory[];
-  deleteRedirectTo: string;
+  deleteRedirectTo: Route;
 }) {
   const canReview = role === "admin" || role === "school_head";
   const canDelete = role === "admin" || (role === "school_user" && report.status === "pending");

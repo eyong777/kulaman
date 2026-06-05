@@ -2,12 +2,13 @@
 
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
+import type { Route } from "next";
 import { Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { deleteReport } from "@/actions/reports";
 import { ConfirmButton } from "@/components/ui/dialog";
 
-export function DeleteReportButton({ reportId, redirectTo }: { reportId: string; redirectTo: string }) {
+export function DeleteReportButton({ reportId, redirectTo }: { reportId: string; redirectTo: Route }) {
   const [, startTransition] = useTransition();
   const router = useRouter();
   return (

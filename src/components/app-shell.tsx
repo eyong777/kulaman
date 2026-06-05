@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import type { Route } from "next";
 import { LogOut, Menu, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -36,7 +37,7 @@ export function AppShell({ profile, children }: { profile: UserProfile; children
               {navItems.map((item) => (
                 <Link
                   key={item.href}
-                  href={item.href}
+                  href={item.href as Route}
                   className={cn(
                     "flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-slate-700 hover:bg-secondary hover:text-primary"
                   )}
@@ -76,7 +77,7 @@ export function AppShell({ profile, children }: { profile: UserProfile; children
                 </summary>
                 <Card className="absolute right-0 mt-2 w-72 p-2">
                   {navItems.map((item) => (
-                    <Link key={item.href} href={item.href} className="flex items-center gap-3 rounded-md px-3 py-2 text-sm">
+                    <Link key={item.href} href={item.href as Route} className="flex items-center gap-3 rounded-md px-3 py-2 text-sm">
                       <item.icon className="size-4" />
                       <span className="flex-1">{item.label}</span>
                       {item.label === "Notifications" ? <NotificationBadge /> : null}

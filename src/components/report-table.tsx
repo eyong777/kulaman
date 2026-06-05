@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Download, Eye } from "lucide-react";
 import { format } from "date-fns";
+import type { Route } from "next";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -37,13 +38,13 @@ export function ReportTable({ reports, basePath }: { reports: Report[]; basePath
               <TableCell>
                 <div className="flex justify-end gap-2">
                   <Button asChild size="sm" variant="outline">
-                    <Link href={`${basePath}/${report.id}`}>
+                    <Link href={`${basePath}/${report.id}` as Route}>
                       <Eye className="size-4" />
                       Open
                     </Link>
                   </Button>
                   <Button asChild size="sm" variant="ghost">
-                    <Link href={`${basePath}/${report.id}`}>
+                    <Link href={`${basePath}/${report.id}` as Route}>
                       <Download className="size-4" />
                     </Link>
                   </Button>

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import type { Route } from "next";
 import { createClient } from "@/lib/supabase/browser";
 
 export function AuthConfirmClient() {
@@ -32,7 +33,7 @@ export function AuthConfirmClient() {
 
       const code = new URLSearchParams(window.location.search).get("code");
       if (code) {
-        router.replace(`/auth/callback?code=${code}&next=/update-password`);
+        router.replace(`/auth/callback?code=${code}&next=/update-password` as Route);
         return;
       }
 

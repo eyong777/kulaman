@@ -21,7 +21,7 @@ export async function getDashboardStats(schoolId?: string | null) {
       .limit(8)
   ]);
 
-  const reportRows = (reports ?? []) as (Report & { report_categories?: { name: string } | null })[];
+  const reportRows = (reports ?? []) as unknown as (Report & { report_categories?: { name: string } | null })[];
   const pending = reportRows.filter((report) => report.status === "pending").length;
   const approved = reportRows.filter((report) => report.status === "approved").length;
   const rejected = reportRows.filter((report) => report.status === "rejected").length;
