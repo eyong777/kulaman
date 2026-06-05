@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import type { Route } from "next";
-import { createClient } from "@/lib/supabase/browser";
+import { getSignedInDestination, handleSupabaseAuthLink } from "@/lib/auth-link-client";
 
 export function AuthConfirmClient() {
   const router = useRouter();
@@ -11,29 +10,20 @@ export function AuthConfirmClient() {
 
   useEffect(() => {
     async function confirm() {
-      const supabase = createClient();
-      const hash = new URLSearchParams(window.location.hash.replace(/^#/, ""));
-      const accessToken = hash.get("access_token");
-      const refreshToken = hash.get("refresh_token");
-
-      if (accessToken && refreshToken) {
-        const { error } = await supabase.auth.setSession({
-          access_token: accessToken,
-          refresh_token: refreshToken
-        });
-
-        if (error) {
-          setMessage(error.message);
-          return;
-        }
-
-        router.replace("/update-password");
+      const linkResult = await handleSupabaseAuthLink();
+      if (linkResult.handled) {
+        router.replace(linkResult.redirectTo);
         return;
       }
 
-      const code = new URLSearchParams(window.location.search).get("code");
-      if (code) {
-        router.replace(`/auth/callback?code=${code}&next=/update-password` as Route);
+      if (linkResult.error) {
+        setMessage(linkResult.error);
+        return;
+      }
+
+      const signedInDestination = await getSignedInDestination();
+      if (signedInDestination) {
+        router.replace(signedInDestination);
         return;
       }
 

@@ -2,33 +2,29 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 import { getSignedInDestination, handleSupabaseAuthLink } from "@/lib/auth-link-client";
 
-export function AuthLinkHandler() {
+export function HomeRedirect() {
   const router = useRouter();
 
   useEffect(() => {
-    async function handleAuthLink() {
+    async function routeUser() {
       const linkResult = await handleSupabaseAuthLink();
       if (linkResult.handled) {
         router.replace(linkResult.redirectTo);
         return;
       }
 
-      if (linkResult.error) {
-        toast.error(linkResult.error);
-        return;
-      }
-
       const signedInDestination = await getSignedInDestination();
-      if (signedInDestination) {
-        router.replace(signedInDestination);
-      }
+      router.replace(signedInDestination ?? "/login");
     }
 
-    handleAuthLink();
+    routeUser();
   }, [router]);
 
-  return null;
+  return (
+    <main className="grid min-h-screen place-items-center bg-background p-6">
+      <p className="text-sm text-muted-foreground">Opening your account...</p>
+    </main>
+  );
 }
