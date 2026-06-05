@@ -37,22 +37,17 @@ body {
   font-feature-settings: "rlig" 1, "calt" 1;
 }
 
-body::before {
+body::after {
   content: "";
   position: fixed;
   inset: 0;
-  z-index: 0;
+  z-index: 50;
   pointer-events: none;
   background-image: url("/eyong-watermark.png");
   background-position: center;
-  background-size: 720px auto;
+  background-size: 680px auto;
   background-repeat: repeat;
-  opacity: 0.08;
-}
-
-body > * {
-  position: relative;
-  z-index: 1;
+  opacity: 0.055;
 }
 
 @layer components {
