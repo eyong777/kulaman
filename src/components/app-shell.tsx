@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card";
 import { APP_NAME, adminNavItems, roleLabels, schoolHeadNavItems, schoolUserNavItems } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { signOut } from "@/actions/auth";
+import { FooterCredit } from "@/components/footer-credit";
 import { NotificationBadge } from "@/components/notification-badge";
 import type { UserProfile } from "@/types/database";
 
@@ -93,7 +94,10 @@ export function AppShell({ profile, children }: { profile: UserProfile; children
               </details>
             </div>
           </header>
-          <main className="flex-1 px-4 py-6 lg:px-8">{children}</main>
+          <main className="flex flex-1 flex-col">
+            <div className="flex-1 px-4 py-6 lg:px-8">{children}</div>
+            <FooterCredit className="mx-4 mb-4 bg-white/70 lg:mx-8" />
+          </main>
         </div>
       </div>
     </div>

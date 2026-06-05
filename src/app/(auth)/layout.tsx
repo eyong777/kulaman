@@ -1,32 +1,25 @@
 import { ShieldCheck } from "lucide-react";
-import Image from "next/image";
+import { FooterCredit } from "@/components/footer-credit";
 import { APP_NAME } from "@/lib/constants";
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
     <main className="grid min-h-screen grid-cols-1 lg:grid-cols-[1.05fr_0.95fr]">
-      <section className="flex items-center justify-center p-6">
-        <div className="w-full max-w-md">{children}</div>
+      <section className="flex min-h-screen flex-col p-6">
+        <div className="flex flex-1 items-center justify-center">
+          <div className="w-full max-w-md">{children}</div>
+        </div>
+        <FooterCredit className="border-t-0 py-0" />
       </section>
       <section className="gov-band relative hidden p-10 text-white lg:flex lg:flex-col lg:justify-between">
-        <div className="flex items-center gap-3">
-          <span className="grid size-12 place-items-center rounded-lg bg-white/15">
-            <ShieldCheck className="size-7" />
+        <div className="flex items-center gap-4">
+          <span className="grid size-[3.6rem] place-items-center rounded-lg bg-white/15">
+            <ShieldCheck className="size-[2.1rem]" />
           </span>
           <div>
-            <p className="text-sm font-semibold uppercase tracking-wide">DepEd Kulaman District</p>
-            <p className="text-2xl font-bold">{APP_NAME}</p>
+            <p className="text-[1.05rem] font-semibold uppercase leading-tight tracking-wide">DepEd Kulaman District</p>
+            <p className="text-[1.8rem] font-bold leading-tight">{APP_NAME}</p>
           </div>
-        </div>
-        <div className="absolute bottom-2 right-2">
-          <Image
-            src="/cyong-logo-bg50.png"
-            alt="CYONG logo"
-            width={2048}
-            height={683}
-            priority
-            className="h-auto w-[96px] object-contain"
-          />
         </div>
       </section>
     </main>
