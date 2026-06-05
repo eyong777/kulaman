@@ -18,14 +18,14 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
             <p className="text-2xl font-bold">{APP_NAME}</p>
           </div>
         </div>
-        <div className="absolute bottom-4 right-4">
+        <div className="absolute bottom-2 right-2">
           <Image
             src="/cyong-logo-bg50.png"
             alt="CYONG logo"
             width={2048}
             height={683}
             priority
-            className="h-auto w-[160px] object-contain"
+            className="h-auto w-[96px] object-contain"
           />
         </div>
       </section>
