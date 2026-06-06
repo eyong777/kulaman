@@ -1,13 +1,13 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import type { Route } from "next";
-import { LogOut, Menu, ShieldCheck } from "lucide-react";
+import { LogOut, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { APP_NAME, adminNavItems, roleLabels, schoolHeadNavItems, schoolUserNavItems } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { signOut } from "@/actions/auth";
 import { FooterCredit } from "@/components/footer-credit";
+import { MobileNavigation } from "@/components/mobile-navigation";
 import { NotificationBadge } from "@/components/notification-badge";
 import type { UserProfile } from "@/types/database";
 
@@ -70,28 +70,7 @@ export function AppShell({ profile, children }: { profile: UserProfile; children
                 <p className="text-xs font-semibold uppercase tracking-wide text-primary">DepEd Kulaman District</p>
                 <h1 className="text-sm font-semibold sm:text-base">{APP_NAME}</h1>
               </div>
-              <details className="relative lg:hidden">
-                <summary className="list-none">
-                  <Button type="button" variant="outline" size="icon">
-                    <Menu className="size-5" />
-                  </Button>
-                </summary>
-                <Card className="absolute right-0 mt-2 w-72 p-2">
-                  {navItems.map((item) => (
-                    <Link key={item.href} href={item.href as Route} className="flex items-center gap-3 rounded-md px-3 py-2 text-sm">
-                      <item.icon className="size-4" />
-                      <span className="flex-1">{item.label}</span>
-                      {item.label === "Notifications" ? <NotificationBadge /> : null}
-                    </Link>
-                  ))}
-                  <form action={signOut} className="mt-2 border-t pt-2">
-                    <Button className="w-full" variant="outline">
-                      <LogOut className="size-4" />
-                      Sign out
-                    </Button>
-                  </form>
-                </Card>
-              </details>
+              <MobileNavigation profile={profile} />
             </div>
           </header>
           <main className="flex flex-1 flex-col">
