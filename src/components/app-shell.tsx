@@ -1,20 +1,15 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import type { Route } from "next";
 import { LogOut, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { APP_NAME, adminNavItems, roleLabels, schoolHeadNavItems, schoolUserNavItems } from "@/lib/constants";
-import { cn } from "@/lib/utils";
+import { APP_NAME, roleLabels } from "@/lib/constants";
 import { signOut } from "@/actions/auth";
 import { FooterCredit } from "@/components/footer-credit";
 import { MobileNavigation } from "@/components/mobile-navigation";
-import { NotificationBadge } from "@/components/notification-badge";
+import { SidebarNavigation } from "@/components/sidebar-navigation";
 import type { UserProfile } from "@/types/database";
 
 export function AppShell({ profile, children }: { profile: UserProfile; children: React.ReactNode }) {
-  const navItems =
-    profile.role === "admin" ? adminNavItems : profile.role === "school_head" ? schoolHeadNavItems : schoolUserNavItems;
-
   if (!profile.is_active) redirect("/login");
 
   return (
@@ -34,21 +29,7 @@ export function AppShell({ profile, children }: { profile: UserProfile; children
                 </span>
               </Link>
             </div>
-            <nav className="flex-1 space-y-1 p-3">
-              {navItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href as Route}
-                  className={cn(
-                    "flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-slate-700 hover:bg-secondary hover:text-primary"
-                  )}
-                >
-                  <item.icon className="size-4" />
-                  <span className="flex-1">{item.label}</span>
-                  {item.label === "Notifications" ? <NotificationBadge /> : null}
-                </Link>
-              ))}
-            </nav>
+            <SidebarNavigation role={profile.role} />
             <div className="border-t p-4">
               <div className="mb-3 rounded-md bg-secondary p-3">
                 <p className="text-sm font-semibold">{profile.full_name}</p>
