@@ -8,6 +8,28 @@ import { logActivity } from "@/lib/audit";
 import { categorySchema, schoolSchema, userSchema } from "@/lib/validators";
 import type { ActionState } from "@/types/actions";
 
+function generateTemporaryPassword() {
+  return crypto.randomUUID().slice(0, 12) + "Aa1!";
+}
+
+function normalizeLoginEmail(value: string) {
+  const raw = value.trim().toLowerCase();
+  const [rawLocal, rawDomain] = raw.includes("@") ? raw.split("@") : [raw, ""];
+  const local =
+    rawLocal
+      .replace(/\s+/g, ".")
+      .replace(/[^a-z0-9.!#$%&'*+/=?^_`{|}~-]/g, ".")
+      .replace(/\.+/g, ".")
+      .replace(/^\.|\.$/g, "") || `user.${Date.now()}`;
+  const domain = rawDomain
+    .replace(/\s+/g, "")
+    .replace(/[^a-z0-9.-]/g, "")
+    .replace(/\.+/g, ".")
+    .replace(/^\.|\.$/g, "");
+
+  return `${local}@${domain.includes(".") ? domain : "kulaman-schools.example.com"}`;
+}
+
 export async function upsertSchool(_: ActionState, formData: FormData): Promise<ActionState> {
   await requireProfile(["admin"]);
   const id = formData.get("id")?.toString();
@@ -59,22 +81,31 @@ export async function createUser(_: ActionState, formData: FormData): Promise<Ac
   }
 
   const admin = createAdminClient();
-  const origin = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+  const email = normalizeLoginEmail(parsed.data.email);
+  const temporaryPassword = generateTemporaryPassword();
   const userMetadata = {
     full_name: parsed.data.full_name,
     role: parsed.data.role,
     school_id: parsed.data.school_id,
     must_change_password: true
   };
-  const { data, error } = await admin.auth.admin.inviteUserByEmail(parsed.data.email, {
-    redirectTo: `${origin}/auth/confirm`,
-    data: userMetadata
+  const { data, error } = await admin.auth.admin.createUser({
+    email,
+    password: temporaryPassword,
+    email_confirm: true,
+    user_metadata: userMetadata
   });
-  if (error || !data.user) return { error: error?.message ?? "Unable to invite user." };
+  if (error || !data.user) {
+    return {
+      error: error?.message.includes("invalid")
+        ? "Unable to create account. Use a simple login ID like school1 or an email-looking value like school1@kulaman-schools.example.com."
+        : error?.message ?? "Unable to create user."
+    };
+  }
 
   const { error: profileError } = await admin.from("users").upsert({
     id: data.user.id,
-    email: parsed.data.email,
+    email,
     full_name: parsed.data.full_name,
     role: parsed.data.role,
     school_id: parsed.data.school_id || null,
@@ -91,9 +122,9 @@ export async function createUser(_: ActionState, formData: FormData): Promise<Ac
     }
   });
 
-  await logActivity({ action: "invited_user", entity_type: "user", entity_id: data.user.id });
+  await logActivity({ action: "created_user", entity_type: "user", entity_id: data.user.id });
   revalidatePath("/admin/users");
-  return { success: "Invitation sent. The user must confirm the email and set a password." };
+  return { success: `Account created. Login ID: ${email}. Temporary password: ${temporaryPassword}` };
 }
 
 export async function resetUserPassword(userId: string) {
@@ -104,7 +135,7 @@ export async function resetUserPassword(userId: string) {
     return { error: "Admin accounts cannot be reset from the administrator panel." };
   }
 
-  const newPassword = crypto.randomUUID().slice(0, 12) + "Aa1!";
+  const newPassword = generateTemporaryPassword();
   const { data: existing } = await admin.auth.admin.getUserById(userId);
   const { error } = await admin.auth.admin.updateUserById(userId, {
     password: newPassword,

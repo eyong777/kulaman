@@ -22,7 +22,7 @@ export const schoolSchema = z.object({
 });
 
 export const userSchema = z.object({
-  email: z.string().email(),
+  email: z.string().min(2, "Enter a login ID or email.").max(160),
   full_name: z.string().min(2).max(120),
   role: z.enum(["admin", "school_head", "school_user"]),
   school_id: z.preprocess(

@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import { useActionState } from "react";
+import { Check, Copy } from "lucide-react";
 import { createUser, upsertCategory, upsertSchool } from "@/actions/admin";
 import { updateOwnSettings } from "@/actions/auth";
 import { updateSchoolProfile } from "@/actions/reports";
 import { SubmitButton } from "@/components/forms/submit-button";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,6 +22,46 @@ function FormMessage({ state }: { state: { error?: string; success?: string } | 
   if (state.success)
     return <div className="rounded-md border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-700">{state.success}</div>;
   return null;
+}
+
+function CreatedUserMessage({ state }: { state: ActionState }) {
+  const [copied, setCopied] = useState<string | null>(null);
+  if (!state?.success) return <FormMessage state={state} />;
+
+  const loginId = state.success.match(/Login ID: ([^.]+(?:\.[^.]+)*@[^.]+(?:\.[^.]+)+)\./)?.[1] ?? "";
+  const temporaryPassword = state.success.match(/Temporary password: (.+)$/)?.[1] ?? "";
+
+  async function copy(value: string, label: string) {
+    await navigator.clipboard.writeText(value);
+    setCopied(label);
+    window.setTimeout(() => setCopied(null), 1800);
+  }
+
+  return (
+    <div className="space-y-3 rounded-md border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-800 md:col-span-2">
+      <p className="font-semibold">Account created. Give this login ID and temporary password to the user.</p>
+      {loginId ? (
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+          <span className="min-w-28 font-medium">Login ID</span>
+          <code className="flex-1 rounded bg-white px-2 py-1 text-slate-900">{loginId}</code>
+          <Button type="button" size="sm" variant="outline" onClick={() => copy(loginId, "login")}>
+            {copied === "login" ? <Check className="size-4" /> : <Copy className="size-4" />}
+            Copy
+          </Button>
+        </div>
+      ) : null}
+      {temporaryPassword ? (
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+          <span className="min-w-28 font-medium">Password</span>
+          <code className="flex-1 rounded bg-white px-2 py-1 text-slate-900">{temporaryPassword}</code>
+          <Button type="button" size="sm" variant="outline" onClick={() => copy(temporaryPassword, "password")}>
+            {copied === "password" ? <Check className="size-4" /> : <Copy className="size-4" />}
+            Copy
+          </Button>
+        </div>
+      ) : null}
+    </div>
+  );
 }
 
 export function SchoolForm({ school }: { school?: School }) {
@@ -89,14 +131,14 @@ export function UserForm({ schools }: { schools: School[] }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Invite user</CardTitle>
-        <CardDescription>Send an email invitation for Admin, School Head, and School Coordinator accounts.</CardDescription>
+        <CardTitle>Create user</CardTitle>
+        <CardDescription>Create Admin, School Head, and School Coordinator accounts without sending email invitations.</CardDescription>
       </CardHeader>
       <CardContent>
         <form action={action} className="grid gap-4 md:grid-cols-2">
-          <FormMessage state={state} />
+          <CreatedUserMessage state={state} />
           <Field name="full_name" label="Full Name" required />
-          <Field name="email" label="Email" type="email" required />
+          <Field name="email" label="Login ID or Email" required />
           <div className="space-y-2">
             <Label htmlFor="role">Role</Label>
             <Select id="role" name="role" value={role} onChange={(event) => setRole(event.target.value)}>
@@ -126,7 +168,7 @@ export function UserForm({ schools }: { schools: School[] }) {
             Active account
           </label>
           <div className="md:col-span-2">
-            <SubmitButton>Send invitation</SubmitButton>
+            <SubmitButton>Create account</SubmitButton>
           </div>
         </form>
       </CardContent>
