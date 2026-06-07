@@ -51,7 +51,7 @@ export function SidebarNavigation({ role }: { role: UserRole }) {
             onPointerDown={() => setPendingHref(item.href)}
             onClick={() => setPendingHref(item.href)}
             className={cn(
-              "flex min-h-11 touch-manipulation items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-slate-700 transition-[background-color,color,transform] duration-100 hover:bg-secondary hover:text-primary active:scale-[0.99]",
+              "flex min-h-11 touch-manipulation items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-slate-700 transition-[background-color,color,transform] duration-100 hover:bg-secondary hover:text-primary active:scale-[0.99] dark:text-slate-200",
               active ? "bg-secondary text-primary" : null,
               loading ? "bg-secondary/80 text-primary" : null
             )}

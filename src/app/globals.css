@@ -25,6 +25,28 @@
   --radius: 0.5rem;
 }
 
+.dark {
+  --background: 222 35% 10%;
+  --foreground: 210 40% 96%;
+  --card: 220 30% 13%;
+  --card-foreground: 210 40% 96%;
+  --popover: 220 30% 13%;
+  --popover-foreground: 210 40% 96%;
+  --primary: 184 72% 43%;
+  --primary-foreground: 222 47% 8%;
+  --secondary: 217 25% 18%;
+  --secondary-foreground: 210 40% 94%;
+  --muted: 218 24% 17%;
+  --muted-foreground: 215 20% 68%;
+  --accent: 190 78% 42%;
+  --accent-foreground: 222 47% 8%;
+  --destructive: 0 68% 48%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 216 24% 25%;
+  --input: 216 24% 27%;
+  --ring: 184 72% 43%;
+}
+
 * {
   border-color: hsl(var(--border));
 }
@@ -35,6 +57,15 @@ body {
     hsl(var(--background));
   color: hsl(var(--foreground));
   font-feature-settings: "rlig" 1, "calt" 1;
+  transition:
+    background-color 180ms ease,
+    color 180ms ease;
+}
+
+.dark body {
+  background:
+    radial-gradient(circle at top left, rgba(34, 184, 188, 0.08), transparent 34rem),
+    hsl(var(--background));
 }
 
 body::after {
@@ -50,8 +81,75 @@ body::after {
   opacity: 0.045;
 }
 
+.dark body::after {
+  opacity: 0.018;
+}
+
+.dark [class~="bg-white"],
+.dark [class~="bg-white/70"],
+.dark [class~="bg-white/92"] {
+  background-color: hsl(var(--card));
+}
+
+.dark [class~="text-slate-700"] {
+  color: hsl(var(--foreground));
+}
+
+.dark [class~="bg-red-50"] {
+  background-color: rgba(127, 29, 29, 0.28);
+}
+
+.dark [class~="border-red-200"] {
+  border-color: rgba(248, 113, 113, 0.35);
+}
+
+.dark [class~="text-red-700"] {
+  color: rgb(252 165 165);
+}
+
+.dark [class~="bg-emerald-50"] {
+  background-color: rgba(6, 78, 59, 0.3);
+}
+
+.dark [class~="border-emerald-200"] {
+  border-color: rgba(52, 211, 153, 0.35);
+}
+
+.dark [class~="text-emerald-700"],
+.dark [class~="text-emerald-800"] {
+  color: rgb(110 231 183);
+}
+
+.dark [class~="bg-amber-50"] {
+  background-color: rgba(120, 53, 15, 0.3);
+}
+
+.dark [class~="border-amber-200"] {
+  border-color: rgba(251, 191, 36, 0.35);
+}
+
+.dark [class~="text-amber-700"] {
+  color: rgb(252 211 77);
+}
+
+.dark [class~="bg-blue-50"] {
+  background-color: rgba(30, 58, 138, 0.3);
+}
+
+.dark [class~="border-blue-200"] {
+  border-color: rgba(96, 165, 250, 0.35);
+}
+
+.dark [class~="text-blue-700"] {
+  color: rgb(147 197 253);
+}
+
 @layer components {
   .gov-band {
     background: linear-gradient(90deg, #063a7a, #0d62b6 52%, #1493b8);
+  }
+
+  .dark .gov-band {
+    background: linear-gradient(90deg, #07142b, #0a2747 52%, #0b5260);
   }
 }

@@ -7,6 +7,7 @@ import { signOut } from "@/actions/auth";
 import { FooterCredit } from "@/components/footer-credit";
 import { MobileNavigation } from "@/components/mobile-navigation";
 import { SidebarNavigation } from "@/components/sidebar-navigation";
+import { ThemeToggle } from "@/components/theme-toggle";
 import type { UserProfile } from "@/types/database";
 
 export function AppShell({ profile, children }: { profile: UserProfile; children: React.ReactNode }) {
@@ -51,7 +52,10 @@ export function AppShell({ profile, children }: { profile: UserProfile; children
                 <p className="text-xs font-semibold uppercase tracking-wide text-primary">DepEd Kulaman District</p>
                 <h1 className="text-sm font-semibold sm:text-base">{APP_NAME}</h1>
               </div>
-              <MobileNavigation profile={profile} />
+              <div className="flex items-center gap-2">
+                <ThemeToggle />
+                <MobileNavigation profile={profile} />
+              </div>
             </div>
           </header>
           <main className="flex flex-1 flex-col">

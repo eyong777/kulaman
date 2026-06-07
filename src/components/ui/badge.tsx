@@ -9,8 +9,8 @@ const badgeVariants = cva("inline-flex items-center rounded-md border px-2.5 py-
       secondary: "border-transparent bg-secondary text-secondary-foreground",
       destructive: "border-transparent bg-destructive text-destructive-foreground",
       outline: "text-foreground",
-      success: "border-emerald-200 bg-emerald-50 text-emerald-700",
-      warning: "border-amber-200 bg-amber-50 text-amber-700"
+      success: "border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-400/30 dark:bg-emerald-950/40 dark:text-emerald-300",
+      warning: "border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-400/30 dark:bg-amber-950/40 dark:text-amber-300"
     }
   },
   defaultVariants: {

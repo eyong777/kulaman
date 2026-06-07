@@ -1,11 +1,13 @@
 import { ShieldCheck } from "lucide-react";
 import { FooterCredit } from "@/components/footer-credit";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { APP_NAME } from "@/lib/constants";
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
     <main className="grid min-h-screen grid-cols-1 lg:grid-cols-[1.05fr_0.95fr]">
-      <section className="flex min-h-screen flex-col p-6">
+      <section className="relative flex min-h-screen flex-col p-6">
+        <ThemeToggle className="absolute right-4 top-4" />
         <div className="flex flex-1 items-center justify-center">
           <div className="w-full max-w-md">{children}</div>
         </div>

@@ -56,7 +56,7 @@ export function MobileNavigation({ profile }: { profile: UserProfile }) {
             className="fixed inset-0 z-[60] bg-slate-950/35"
             onClick={() => setOpen(false)}
           />
-          <div className="fixed right-4 top-20 z-[70] w-[min(calc(100vw-2rem),22rem)] rounded-lg border bg-white p-3 shadow-xl">
+          <div className="fixed right-4 top-20 z-[70] w-[min(calc(100vw-2rem),22rem)] rounded-lg border bg-card p-3 text-card-foreground shadow-xl">
             <div className="mb-3 rounded-md bg-secondary p-3">
               <p className="text-sm font-semibold">{profile.full_name}</p>
               <p className="text-xs text-muted-foreground">{roleLabels[profile.role]}</p>
@@ -76,7 +76,7 @@ export function MobileNavigation({ profile }: { profile: UserProfile }) {
                       onPointerDown={() => setPendingHref(item.href)}
                       onClick={() => setPendingHref(item.href)}
                       className={cn(
-                        "flex min-h-11 touch-manipulation items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-slate-700 transition-[background-color,color,transform] duration-100 hover:bg-secondary hover:text-primary active:scale-[0.99]",
+                        "flex min-h-11 touch-manipulation items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-slate-700 transition-[background-color,color,transform] duration-100 hover:bg-secondary hover:text-primary active:scale-[0.99] dark:text-slate-200",
                         active ? "bg-secondary text-primary" : null,
                         loading ? "bg-secondary/80 text-primary" : null
                       )}
